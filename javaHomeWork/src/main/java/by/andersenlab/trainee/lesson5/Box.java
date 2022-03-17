@@ -1,36 +1,33 @@
 package by.andersenlab.trainee.lesson5;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class Box<T extends Fruit> implements Comparable {
+public class Box<T extends Fruit> {
 
-    private ArrayList<T> fruits = new ArrayList<>();
-    private float totalWeight;
-    Box<Apple> appleBox = new Box<>();
-    Box<Apple> orangeBox = new Box<>();
-    Apple apple = new Apple(1.0f);
-    Orange orange = new Orange(1.5f);
+    private List<T> fruits = new ArrayList<>();
 
     public void addFruit(T fruit) {
         fruits.add(fruit);
     }
 
-    public float getTotalWeight(Fruit fruit) {
-        totalWeight = fruits.size() * fruit.getWeight();
-        return totalWeight;
-    }
-
-    @Override
-    public int compareTo(Object o) {
-        return 0;
-    }
-
-    public boolean compare(Box<Apple> appleBox, Box<Orange> orangeBox) {
-        if (appleBox.getTotalWeight(apple) == orangeBox.getTotalWeight(orange)) {
-            return true;
+    public float getWeight() {
+        if (fruits.isEmpty()) {
+            return 0;
         } else {
-            return false;
+            return fruits.size() * fruits.get(0).getWeight();
         }
+    }
+
+    public boolean compare(Box box) {
+        return this.getWeight() == box.getWeight();
+    }
+
+    public void pour(Box<T> box) {
+        for (T fruit : fruits) {
+            box.addFruit(fruit);
+        }
+        fruits.clear();
     }
 }
 

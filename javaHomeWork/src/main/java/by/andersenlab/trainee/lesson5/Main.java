@@ -8,22 +8,24 @@ public class Main {
         ArrayUtils.swap(items, 0, 2);
         ArrayUtils.print(items);
 
-        Apple apple = new Apple(1.0f);
-        Orange orange = new Orange(1.5f);
-
         Box<Apple> appleBox = new Box<>();
-        appleBox.addFruit(apple);
-        appleBox.addFruit(apple);
-        appleBox.addFruit(apple);
+        int applesAmount = 3;
+        for (int i = 0; i < applesAmount; i++) {
+            appleBox.addFruit(new Apple());
+        }
         Box<Orange> orangeBox = new Box<>();
-        orangeBox.addFruit(orange);
-        orangeBox.addFruit(orange);
-        orangeBox.addFruit(orange);
-        System.out.println(appleBox.getTotalWeight(apple));
-        System.out.println(orangeBox.getTotalWeight(orange));
-        System.out.println(appleBox.getTotalWeight(apple) == orangeBox.getTotalWeight(orange));
+        int orangesAmount = 3;
+        for (int i = 0; i < orangesAmount; i++) {
+            orangeBox.addFruit(new Orange());
+        }
 
+        Box<Orange> newOrangesBox = new Box<>();
+        orangeBox.pour(newOrangesBox);
 
+        System.out.println("Total weight of the apple box: " + appleBox.getWeight());
+        System.out.println("Total weight of the orange box: " + orangeBox.getWeight());
+        System.out.println("Total weight of the new orange box: " + newOrangesBox.getWeight());
+        System.out.println("Is the weight of the boxes equal? - " + appleBox.compare(orangeBox));
     }
 }
 
