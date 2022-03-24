@@ -5,25 +5,33 @@ import java.io.PrintWriter;
 
 public class CsvWriter {
 
-    public void save(AppData data) {
-        try (PrintWriter writer = new PrintWriter("appData.csv")) {
-            StringBuilder builder = new StringBuilder();
-            for (String columnName : data.getHeader()) {
-                builder.append(columnName).append(";");
-            }
-            builder.deleteCharAt(builder.length() - 1);
+    private CsvWriter(){
+    }
 
-            for (int[] rows : data.getData()) {
-                builder.append("\n");
-                for (int value : rows) {
-                    builder.append(value).append(";");
-                }
-                builder.deleteCharAt(builder.length() - 1);
-            }
-
-            writer.write(builder.toString());
+    public static void save(AppData data) {
+        try (PrintWriter writer = new PrintWriter("AppData.csv")) {
+            String csvString = appDataToCsvString(data);
+            writer.write(csvString);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private static String appDataToCsvString(AppData data) {
+        StringBuilder builder = new StringBuilder();
+
+        for (String columnName : data.getHeader()) {
+            builder.append(columnName).append(";");
+        }
+        builder.deleteCharAt(builder.length() - 1);
+
+        for (int[] rows : data.getData()) {
+            builder.append("\n");
+            for (int value : rows) {
+                builder.append(value).append(";");
+            }
+            builder.deleteCharAt(builder.length() - 1);
+        }
+        return builder.toString();
     }
 }

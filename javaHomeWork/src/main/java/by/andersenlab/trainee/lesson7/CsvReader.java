@@ -8,38 +8,48 @@ import java.util.List;
 
 public class CsvReader {
 
-    public AppData read() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("appData.csv"))) {
-            String[] header;
-            String line;
-            if ((line = reader.readLine()) != null) {
-                header = line.split(";");
-            } else {
-                return null;
-            }
+    private CsvReader() {
+    }
 
-            List<String[]> dataStrings = new ArrayList<>();
-            while ((line = reader.readLine()) != null) {
-                dataStrings.add(line.split(";"));
-            }
-
-            int[][] data = new int[dataStrings.size()][];
-            for (int i = 0; i < dataStrings.size(); i++) {
-                String[] stringsRow = dataStrings.get(i);
-                int[] row = new int[stringsRow.length];
-
-                for (int j = 0; j < stringsRow.length; j++) {
-                    row[j] = Integer.parseInt(stringsRow[j]);
-                }
-
-                data[i] = row;
-            }
-
-            return new AppData(header, data);
+    public static AppData read() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("AppData.csv"))) {
+            return csvFileReaderToAppData(reader);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private static AppData csvFileReaderToAppData(BufferedReader reader) throws IOException {
+        String[] header;
+        String line;
+        if ((line = reader.readLine()) != null) {
+            header = line.split(";");
+        } else {
+            return null;
+        }
+
+        List<String[]> dataStrings = new ArrayList<>();
+        while ((line = reader.readLine()) != null) {
+            dataStrings.add(line.split(";"));
+        }
+
+        int[][] data = stringsToInts(dataStrings);
+        return new AppData(header, data);
+    }
+
+    private static int[][] stringsToInts(List<String[]> strings) {
+        int[][] ints = new int[strings.size()][];
+        for (int i = 0; i < strings.size(); i++) {
+            String[] stringsRow = strings.get(i);
+            int[] intsRow = new int[stringsRow.length];
+
+            for (int j = 0; j < stringsRow.length; j++) {
+                intsRow[j] = Integer.parseInt(stringsRow[j]);
+            }
+            ints[i] = intsRow;
+        }
+        return ints;
     }
 }
 
